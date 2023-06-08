@@ -14,22 +14,29 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(expenses.items) { item in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(item.name)
-                                .font(.headline)
-                            Text(item.type)
+                // Personal Section
+                Section {
+                    ForEach(expenses.items) { item in
+                        if item.type == "Personal" {
+                            ItemView(item: item)
                         }
-                        
-                        Spacer()
-                        Text(item.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
-                            .foregroundColor(
-                                item.amount >= 100 ? .red :
-                                    (item.amount >= 10 ? .orange : .green))
                     }
+                    .onDelete(perform: removeItems)
+                } header: {
+                    Text("Personal")
                 }
-                .onDelete(perform: removeItems)
+                
+                // Business Section
+                Section {
+                    ForEach(expenses.items) { item in
+                        if item.type == "Business" {
+                            ItemView(item: item)
+                        }
+                    }
+                    .onDelete(perform: removeItems)
+                } header: {
+                    Text("Business")
+                }
             }
             .navigationTitle("iExpense")
             .toolbar {
@@ -47,6 +54,26 @@ struct ContentView: View {
     
     func removeItems(at offsets: IndexSet) {
         expenses.items.remove(atOffsets: offsets)
+    }
+}
+
+struct ItemView: View {
+    var item: ExpenseItem
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(item.name)
+                    .font(.headline)
+                Text(item.type)
+            }
+            
+            Spacer()
+            Text(item.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                .foregroundColor(
+                    item.amount >= 100 ? .red :
+                        (item.amount >= 10 ? .orange : .green))
+        }
     }
 }
 
