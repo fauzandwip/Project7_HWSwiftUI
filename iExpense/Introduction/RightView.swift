@@ -8,12 +8,13 @@
 import SwiftUI
 
 class SecondUser: ObservableObject {
-    //
+    // publishes change announcements automatically.
     @Published var firstName = "Bilbo"
     @Published var lastName = "Baggins"
 }
 
 struct RightView: View {
+    // watches for those announcements and refreshes any views using the object.
     @StateObject var user = SecondUser()
     
     @State private var showingSheet = false
