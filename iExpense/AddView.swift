@@ -27,10 +27,16 @@ struct AddView: View {
                     }
                 }
                 
-                TextField("amount", value: $amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                TextField("amount", value: $amount, format: .currency(code:"USD"))
                     .keyboardType(.decimalPad)
             }
             .navigationTitle("Add New Expense")
+            .toolbar {
+                Button("Save") {
+                    let item = ExpenseItem(name: name, type: type, amount: amount)
+                    expenses.items.append(item)
+                }
+            }
         }
     }
 }
