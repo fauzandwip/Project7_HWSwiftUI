@@ -14,28 +14,42 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             List {
-                // Personal Section
-                Section {
-                    ForEach(expenses.items) { item in
-                        if item.type == "Personal" {
-                            ItemView(item: item)
+                if !expenses.items.filter({ item in
+                    item.type == "Personal"
+                }).isEmpty {
+                    // Personal Section
+                    Section {
+                        ForEach(expenses.items) { item in
+                            if item.type == "Personal" {
+                                ItemView(item: item)
+                                // project 15 - Accessibility VoiceOver
+                                    .accessibilityLabel("\(item.name), \(item.amount)")
+                                    .accessibilityHint("Personal")
+                            }
                         }
+                        .onDelete(perform: removeItems)
+                    } header: {
+                        Text("Personal")
                     }
-                    .onDelete(perform: removeItems)
-                } header: {
-                    Text("Personal")
                 }
                 
-                // Business Section
-                Section {
-                    ForEach(expenses.items) { item in
-                        if item.type == "Business" {
-                            ItemView(item: item)
+                if !expenses.items.filter({ item in
+                    item.type == "Business"
+                }).isEmpty {
+                    // Business Section
+                    Section {
+                        ForEach(expenses.items) { item in
+                            if item.type == "Business" {
+                                ItemView(item: item)
+                                // project 15 - Accessibility VoiceOver
+                                    .accessibilityLabel("\(item.name), \(item.amount)")
+                                    .accessibilityHint("Business")
+                            }
                         }
+                        .onDelete(perform: removeItems)
+                    } header: {
+                        Text("Business")
                     }
-                    .onDelete(perform: removeItems)
-                } header: {
-                    Text("Business")
                 }
             }
             .navigationTitle("iExpense")
